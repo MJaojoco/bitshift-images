@@ -13,3 +13,5 @@ $(TARGET): $(TARGET).c
 clean:
 	$(RM) $(TARGET)
 	$(RM) -rf out
+		$(RM) -rf $(TARGET).dSYM
+

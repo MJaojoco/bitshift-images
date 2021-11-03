@@ -1,0 +1,9 @@
+# object files
+
+copy_images
+*.dSYM
+*.o
+
+# pictures
+
+*.bmp

@@ -38,6 +38,11 @@ int copy_image(char *image_path, char *copy_path){
     for(int i = 54; i < img_size; i++){
         int *temp = malloc(1);
         memcpy(temp, buffer + i, 1);
+
+        /** bit manipulation to change the image:
+         * << will pixelate the image slightly, and make the colors more vibrant
+         * >> will darken all the bytes
+         */
         *temp <<= 1;
         fwrite(temp, 1, 1, copy_fp);
     }
@@ -52,6 +57,7 @@ int copy_image(char *image_path, char *copy_path){
 int main(int argc, char *argv[]){
     if(argc != 3){
         perror("usage: ./a.out <src_dir> <dest_dir>");
+        return -1;
     }
     DIR *src_dir;
     struct dirent *curr_image;
@@ -79,8 +85,8 @@ int main(int argc, char *argv[]){
 
             /* construct path names to current targets from cwd */
             in_name = strncat(in_name, curr_image->d_name, strlen(in_name) + strlen(curr_image->d_name));
-            out_name = strncat(out_name, curr_image->d_name, strlen(out_name) + strlen(curr_image->d_name) - 6);
-            out_name = strncat(out_name, "_edited.bmp", strlen(out_name) + 11);
+            out_name = strncat(out_name, curr_image->d_name, strlen(curr_image->d_name) - 4);
+            out_name = strncat(out_name, "_edited.bmp", 11);
 
             copy_image(in_name, out_name);
 
