@@ -1,0 +1,11 @@
+Author: Matthew Jaojoco
+
+usage:
+    make copy_images
+    ./copy_images <src-dir> <dest-dir>
+
+copy_images.c takes in 2 args, both directory names
+    src-dir = the directory containing bmps to be edited
+    dest-dir = the directory in which the edited bmps are to be placed
+
+provided: directory bmps, which contains 2000 copies of a bmp with exact length 4kb (4096 bytes)
