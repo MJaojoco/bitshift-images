@@ -35,7 +35,8 @@ int copy_image(char *image_path, char *copy_path, void *buffer){
     /* write bmp header, without bit manipulation */
     fwrite(buffer, 54, 1, copy_fp);
     /* write bmp contents, with bit manipulation */
-    for(int i = 54; i < img_size; i++){
+    int i;
+    for(i = 54; i < img_size; i++){
         int *temp = malloc(1);
         memcpy(temp, buffer + i, 1);
 
