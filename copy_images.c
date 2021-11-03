@@ -1,3 +1,4 @@
+#include "copy_images.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <dirent.h>
@@ -5,10 +6,9 @@
 #include <unistd.h>
 #include <sys/stat.h>
 
-int copy_image(char *image_path, char *copy_path){
+int copy_image(char *image_path, char *copy_path, void *buffer){
     FILE *image_fp, *copy_fp;
     int img_size, retno;
-    char *buffer;
 
     image_fp = fopen(image_path, "r");
     if(image_fp == NULL){
@@ -47,7 +47,6 @@ int copy_image(char *image_path, char *copy_path){
         fwrite(temp, 1, 1, copy_fp);
     }
 
-    free(buffer);
     fclose(image_fp);
     fclose(copy_fp);
 
@@ -80,7 +79,14 @@ int main(int argc, char *argv[]){
     /* add error handling */
     mkdir(argv[2], 0700);
 
+    struct Node head;
+    struct Node curr;
+    struct Node next;
+
+    curr = head;
+
     while( (curr_image = readdir(src_dir)) ){
+        void *buffer = NULL;
         if(strcmp(curr_image->d_name, ".") != 0 && strcmp(curr_image->d_name, "..") != 0){
 
             /* construct path names to current targets from cwd */
@@ -88,7 +94,10 @@ int main(int argc, char *argv[]){
             out_name = strncat(out_name, curr_image->d_name, strlen(curr_image->d_name) - 4);
             out_name = strncat(out_name, "_edited.bmp", 11);
 
-            copy_image(in_name, out_name);
+            copy_image(in_name, out_name, buffer);
+            curr.ptr = &buffer;
+            curr.next = &next;
+            curr = next;
 
             /* switch in_name and out_name back to only the directory + "/" */
             memset(in_name + in_len, 0, 1);
