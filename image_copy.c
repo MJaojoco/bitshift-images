@@ -36,7 +36,12 @@ int main(int argc, char* argv[]){
     for(int i = 54; i < img_size; i++){
         int *temp = malloc(1);
         memcpy(temp, buffer + i, 1);
-        *temp <<= 1;
+        /* *temp <<= 1; include this line to bit manipulate*/
+        fwrite(temp, 1, 1, copy_fp);
+    }
+    for(int i = img_size; i < 8192; i++){
+        char *temp = malloc(1);
+        *temp = i % 256;
         fwrite(temp, 1, 1, copy_fp);
     }
 
