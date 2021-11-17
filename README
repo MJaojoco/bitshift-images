@@ -8,4 +8,5 @@ copy_images.c takes in 2 args, both directory names
     src-dir = the directory containing bmps to be edited
     dest-dir = the directory in which the edited bmps are to be placed
 
-provided: directory bmps, which contains 2000 copies of a bmp with exact length 4kb (4096 bytes)
+provided: directory 4kb_bmps, which contains 2,000,000 copies of a bmp with exact size 4kb (4096 bytes)
+          directory 4.2kb_bmps, which contains 2,000,000 copies of a bmp with exact size 4.2kb
