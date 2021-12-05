@@ -39,7 +39,7 @@ int main(int argc, char* argv[]){
         /* *temp <<= 1; include this line to bit manipulate*/
         fwrite(temp, 1, 1, copy_fp);
     }
-    for(int i = img_size; i < 8192; i++){
+    for(int i = img_size; i < 4300; i++){
         char *temp = malloc(1);
         *temp = i % 256;
         fwrite(temp, 1, 1, copy_fp);
