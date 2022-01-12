@@ -1,12 +1,54 @@
 Author: Matthew Jaojoco
 
+Virtual Memory Experiment:
+    The goal of this code is to observe the performance difference between
+    a process using virtual memory and using disk space.
+
+    To do this, I wrote a program that has the ability to use up all of the process's
+    virtual memory. This process takes in a directory of files and for each file in the directory,
+    makes a copy and bitshifts all of the copy's contents (i.e. excludes the file header).
+    Buffers for each photo are reserved in memory, and are not freed until all files have been copied.
+
+    The provided code works properly when the size of all the files collectively remains
+    significantly smaller than virtual memory, but when virtual memory gets close to fully used,
+    the process signals SIGKILL(9) for unknown reasons.
+
+    This could potentially be due to the OS seeing RAM being maxed out, and thee OS
+    forcing the process to shut down, but further investigation is needed to reach a conclusion.
+
+    The goal was to ultimately show that setting the image to the exact page size of a page in
+    virtual memory will noticeably increase performance. However since I was unable to force
+    the process to use disk space, this was never observed.
+
 usage:
     make copy_images
     ./copy_images <src-dir> <dest-dir>
+
+note: make sure you have enough hard disk space before running the code
 
 copy_images.c takes in 2 args, both directory names
     src-dir = the directory containing bmps to be edited
     dest-dir = the directory in which the edited bmps are to be placed
 
-provided: directory 4kb_bmps, which contains 2,000,000 copies of a bmp with exact size 4kb (4096 bytes)
-          directory 4.2kb_bmps, which contains 2,000,000 copies of a bmp with exact size 4.2kb
+note: the code can be made more efficient by making multiple copies of a single source image
+      rather than making a single copy each from multiple source images
+      i originally intended on making different bmps, but realized that is unnecessary
+      to test how victimizing virtual memory and forcing disk storage impacts performance.
+
+bmps: 4kb.bmp, 4300.bmp, 8kb.bmp
+    each is a bmp with sizes 4096 bytes, 4300 bytes, and 8192 bytes respectively
+    they are all downscaled versions of big-mustang.bmp
+    these bmps were created by adjusting the canvas size of big-mustang.bmp in Photoshop
+    then scaling the photo down to fit the canvas
+    once the image is slightly smaller than the desired size,
+    change the value of desiredSize in image_copy.c on line 43
+
+make_n_images.sh: a script is provided to make the directories of images
+                required in order to run the program
+
+      usage: ./make_n_images n
+
+      output: 4kb_bmps, 4300_bmps, 8kb_bmps each w n images of the respective size
+
+
+
